@@ -23,8 +23,8 @@ set -o nounset
 set -o pipefail
 
 # AWS IAM user and config profile to use
-declare -r user='doug'
-declare -r profile='sandbox'
+declare -r user='jane'
+declare -r profile='development'
 
 # Temporary file to hold AccessKeyId, SecretAccessKey, and SessionToken returned
 # from 'aws sts assume-role' command.
@@ -39,8 +39,8 @@ aws_session_token=$(cat "${creds_file}"|jq -r .SessionToken)
 # delete temporary .json file
 [[ -f "${creds_file}" ]] && rm "${creds_file}"
 
-aws configure set aws_access_key_id "${aws_access_key_id}" --profile tf
-aws configure set aws_secret_access_key "${aws_secret_access_key}" --profile tf
-aws configure set aws_session_token "${aws_session_token}" --profile tf
+aws configure set aws_access_key_id "${aws_access_key_id}" --profile "${profile}"
+aws configure set aws_secret_access_key "${aws_secret_access_key}" --profile "${profile}"
+aws configure set aws_session_token "${aws_session_token}" --profile "${profile}"
 
-echo "Now run terraform with the ~/.aws/credentials 'tf' profile."
+echo "The '"${profile}"' profile has been updated in ~/.aws/credentials."
